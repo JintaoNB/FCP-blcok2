@@ -1,1 +1,1 @@
-# FCP-blcok2
+print("123")
