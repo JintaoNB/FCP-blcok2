@@ -1,4 +1,4 @@
-def read_input_files(filenames):
+def read_input_output_files(filenames):
     sequences = []
     for filename in filenames:
         with open(filename, 'r') as file:
@@ -11,24 +11,33 @@ def read_input_files(filenames):
         file.write(sequence)
         file.close()
         return sequences
-A = 0
-C = 0
-T = 0
-G = 0
-for i in sequence:
-    if i == 'a':
-        A += 1
-    elif i == 'c':
-        C += 1
-    elif i == 't':
-        T += 1
-    elif i == 'g':
-        G += 1
-base_counts = {'A': A, 'C': C, 'T': T, 'G': G}
-print(base_counts)
 
-def complement(seq, reverse=False):
-    for s in seq:
+def base_count(filenames):
+    A = 0
+    C = 0
+    T = 0
+    G = 0
+    for filename in filenames:
+        with open(filename, 'r') as file:
+            sequence = file.read()
+    for i in sequence:
+        if i == 'A':
+            A += 1
+        elif i == 'C':
+            C += 1
+        elif i == 'T':
+            T += 1
+        elif i == 'G':
+            G += 1
+        base_counts = {'A': A, 'C': C, 'T': T, 'G': G}
+        return base_counts
+
+
+def complement(filenames, reverse=False):
+    for filename in filenames:
+        with open(filename, 'r') as file:
+            sequence = file.read()
+    for s in sequence:
         s = s[:50]
         complement_dict = {'A': 'T', 'C': 'G', 'T': 'A', 'G': 'C'}
         complement_sequence = ''
@@ -38,21 +47,33 @@ def complement(seq, reverse=False):
             complement_sequence = complement_sequence[::-1]
         return complement_sequence
 
-def calculate_gc_content(seq, window_size):
+
+def calculate_gc_content(filenames, window_size):
+    for filename in filenames:
+        with open(filename, 'r') as file:
+            sequence = file.read()
     total_sum = 0
-    for s in seq:
+    for s in sequence:
         for i in range(len(s) - window_size + 1):
-            window = seq[i:i + window_size]
+            window = sequence[i:i + window_size]
             sum_g = window.count('G')
             sum_c = window.count('C')
             total_sum += (sum_g + sum_c) / len(window)
-    return total_sum
+        return total_sum
 
-def detect_gc_islands(seq, window_size, gc_threshold):
+
+
+
+
+
+def detect_gc_islands(filenames, window_size, gc_threshold):
+    for filename in filenames:
+        with open(filename, 'r') as file:
+            sequence = file.read()
     gc_islands = []
-    for s in seq:
+    for s in sequence:
         for i in range(len(s) - window_size + 1):
-            window = seq[i:i + window_size]
+            window = sequence[i:i + window_size]
             sum_g = window.count('G')
             sum_c = window.count('C')
             total_sum = len(window)
